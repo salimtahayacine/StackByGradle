@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: sample-liquibase-keycloak-minio-app
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  datasource:
+    url: jdbc:sqlserver://localhost:57134;encrypt=true;trustServerCertificate=true;databaseName=liquibase_test
+    username: admin
+    password: admin
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/Stronglover
+          jwk-set-uri: http://localhost:8080/realms/Stronglover/protocol/openid-connect/certs
+server:
+  port: 8085
+jwt:
+  auth:
+    converter:
+      resource-id: Stronglover-rest-api
+      principle-attribute: preferred_username
+minio:
+  endpoint: http://localhost:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket: files
